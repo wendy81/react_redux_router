@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 // import { Router, Route, browserHistory } from 'react-router'
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -38,6 +38,7 @@ class App extends React.Component {
 		<Provider store={store}>
 			<BrowserRouter>
 			<div>
+				<Redirect to={{pathname: '/home'}} />
 				<Route exact={true} path="/actor" component= {ActorComponent}  />
 				<Route path="/" />
 				<Route path="/list" component= {ListComponent} />
