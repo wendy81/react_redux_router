@@ -1,92 +1,77 @@
 import React from 'react';
-// import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Label, Button, Table } from 'reactstrap';
+import { Control, Errors, Form } from 'react-redux-form';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import  LazyLoad from 'react-lazy-load'
-import GetDataAction from '../Actions/GetDataAction'
-import ImagesLoadAction from '../Actions/ImagesLoadAction'
 
-
+import { UserActions }  from '../Actions/UserActions';
+import AlertComponent from './AlertComponent';
 
 class HomeComponent extends React.Component {
 
-  componentWillMount() {
-      this.props.dispatch(GetDataAction(`${this.props.match.url}`));
-      this.props.dispatch(ImagesLoadAction(this))
-  } 
+  handlerExit(){
+    const { history, dispatch } = this.props;
+    dispatch(UserActions.Logout(history))
+  }
 
-  // <li><Link to={`${match.url}/shoes`}>Shoes</Link></li>
+  handlerDel(id, userId){
+    const { history, dispatch } = this.props;
+    dispatch(UserActions.DelList(id, userId))
+  }  
 
+  componentDidMount() {
+    this.props.dispatch(UserActions.GetAll())
+  }
   render() {
-    const { loading, status, featured, error, imgLoading} = this.props;
-
-    let featured_small_block1;
-    let featured_small_block2;
-    let featured_big_block;
-    if(loading) {
-        featured_small_block1 = featured.featured_small_block1.map( (val) => {
-        return (
-          <Col xs="6" key={val.src}>
-            <LazyLoad>
-            <img onLoad={this.onLoad} onError={this.onError} style={{width:'100%', height:'auto'}} src={val.src} alt={val.altText}/>
-            </LazyLoad>
-            {imgLoading ? "Loaded" : "Loading"}
-          </Col>
-        )
-        })
-
-        featured_small_block2  = featured.featured_small_block2.map( (val) => {
-        return (
-          <Col xs="6" key={val.src}>
-          <LazyLoad>
-          <img onLoad={this.onLoad} onError={this.onError} style={{width:'100%', height:'auto'}} src={val.src} alt={val.altText} />
-          </LazyLoad>
-          {imgLoading ? "Loaded" : "Loading"}
-          </Col>
-        )
-        })        
-
-        featured_big_block = featured.featured_big_block.big_blocks.slice(0,featured.featured_big_block.show_num).map( (val) => {
-        return (
-          <Link to="/detail" key={val.src}>
-            <LazyLoad>
-            <img onLoad={this.onLoad} onError={this.onError} style={{width:'100%', height:'auto'}} src={val.src} alt={val.altText}/>
-            </LazyLoad>
-            {imgLoading ? "Loaded" : "Loading"}
-          </Link>
-        )
-        })
-    }else {
-      featured_small_block1 = featured_small_block2 = featured_big_block = <Col>{status}{error}</Col>
-    }
+    const { alertType, alertMessage, user, users, dispatch } = this.props;
+  
+    const usersList = users ?  users.map( (val, index) => {
+      let id = val.id;
+      let userId = user.id;
+      return (
+          <tr key={val.id}>
+            <th scope="row">{val.id}</th>
+            <td>{val.username}</td>
+            <td onClick={this.handlerDel.bind(this, id, userId)}>DEL</td>
+            <td>EDIT</td>           
+          </tr>
+      )
+    }): []
 
     return (
       <div>
-        <Container fluid>
+        <Container>
 
-        <Row className="header">
-          <h2>Featured</h2>
-        </Row>
+        <Row className='pos_rel'>
 
-        <Row noGutters>
-          {featured_small_block1}
+        <AlertComponent  alertMessage={alertMessage} alertType={alertType}/>
+
+        <Col style={{ overflow:'hidden',padding:0}} >
+          <img style={{width:'140%', height:'auto'}} src="/images/detail_block1@3x.png"  alt="img"/>
+          <Row style={{padding:'10px', position: 'absolute', right:0, top:0}}>
+            <Col xs="6" className="text-left">username:{user.username}</Col>
+            <Col xs="6" className="text-right" onClick={this.handlerExit.bind(this)}>Exit</Col>
+          </Row>   
+            
+        </Col>
+
+        
+        <Table dark className='user_list_table opacity'>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User Name</th>
+            <th colSpan='2'>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          { usersList }
+        </tbody>
+        </Table>
+
         </Row>
 
         </Container>  
-
-        <Container>
-
-        <Row>
-          <Col>{featured_big_block}</Col>
-        </Row>
-
-        <Row noGutters>
-          {featured_small_block2}
-        </Row>
-        </Container>
-
       </div>
     );
 
@@ -98,18 +83,16 @@ Row.propTypes = {
 }
 Container.propTypes = {
   fluid:  PropTypes.bool
-  // applies .container-fluid class
 }
 
 // Add this function:
 function mapStateToProps(state, ownProps) {
   console.log(state)
   return {
-    loading:state.HomeReducer.loading,
-    status:state.HomeReducer.status,
-    error:state.HomeReducer.error,
-    featured:state.HomeReducer.featured,
-    imgLoading: state.ImageReducer.imgLoading
+    history: ownProps.history,
+    alertMessage:state.AlertReducer.message,
+    alertType:state.AlertReducer.type,
+    users: state.HomeReducer.users
   };
 }
 
