@@ -75,7 +75,7 @@ export function configureFakeBackend() {
 		                    return;
 		                }
                         // getAll
-                        if (url.endsWith('/home') && opts.method === 'GET') {
+                        if (url.endsWith('/lists') && opts.method === 'GET') {
                             if (opts.headers && opts.headers.Authorization === 'Bearer fake-jwt-token') {
                                 resolve({ ok: true, json: () => users });
                             } else {

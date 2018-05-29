@@ -46,7 +46,7 @@ function GetAll() {
         method:'GET',
         headers: authHeader(),
     }
-    return fetch('/home', requestOptions).then(handleResponse)
+    return fetch('/lists', requestOptions).then(handleResponse)
 }
 
 

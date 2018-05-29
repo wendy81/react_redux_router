@@ -30,7 +30,7 @@ function Login(username, password, history) {
         userService.Login(username, password)
         .then( user => {
             dispatch(makeActionCreator(userConstants.LOGIN_SUCCESS, 'user')(user));
-            history.push('/home');
+            history.push('/lists');
             dispatch(makeActionCreator(alertConstants.SUCCESS,'message')('Login successful'));
         })
         .catch( error => {
@@ -81,7 +81,7 @@ function Logout(history) {
         dispatch(makeActionCreator(userConstants.LOGOUT, 'message')('Exit successfull'))
         dispatch(makeActionCreator(alertConstants.SUCCESS,'message')('Exit successfull'));
         userService.Logout();
-        history.push('/home');
+        history.push('/lists');
         AlertClear(dispatch);
     }   
 }

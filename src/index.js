@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
 import { PrivateRoute } from './Components/PrivateRoute';
 
@@ -42,9 +42,12 @@ class App extends React.Component {
 		<Provider store={store}>
 			<BrowserRouter>
 			<div>
-				<Route path="/register" component={RegisterComponent}/>
-				<Route path="/login" component={LoginComponent}/>
-				<PrivateRoute  path="/home" component={HomeComponent} />
+				<Switch>
+				<Route path="/register" component={RegisterComponent} />
+				<Route path="/login" component={LoginComponent} />
+				<PrivateRoute  path="/lists" component={HomeComponent} />
+				<Redirect to="/lists"/>
+				</Switch>
 			</div>
 			</BrowserRouter>
 		</Provider>
