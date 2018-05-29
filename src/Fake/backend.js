@@ -1,6 +1,5 @@
 // array in local storage for registered users
 let users = JSON.parse(localStorage.getItem('users')) || [];
-let currentUsers = JSON.parse(localStorage.getItem('user')) || [];
 
 export function configureFakeBackend() {
     let realFetch = window.fetch;
@@ -96,6 +95,7 @@ export function configureFakeBackend() {
                                        resolve({ ok: true, json: () => users })
                                        localStorage.setItem('users', JSON.stringify(users)) 
                                     }
+                                    return users;
                                 });                                
                              } else {
                                 reject('Can not Delete Current User.');

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Row, Col, Label, Button, Table } from 'reactstrap';
-import { Control, Errors, Form } from 'react-redux-form';
+import { Container, Row, Col, Table } from 'reactstrap';
 import { connect } from 'react-redux';
 
 import { UserActions }  from '../Actions/UserActions';
@@ -15,7 +14,7 @@ class HomeComponent extends React.Component {
   }
 
   handlerDel(id, userId){
-    const { history, dispatch } = this.props;
+    const { dispatch } = this.props;
     dispatch(UserActions.DelList(id, userId))
   }  
 
@@ -23,7 +22,7 @@ class HomeComponent extends React.Component {
     this.props.dispatch(UserActions.GetAll())
   }
   render() {
-    const { alertType, alertMessage, user, users, dispatch } = this.props;
+    const { alertType, alertMessage, user, users } = this.props;
   
     const usersList = users ?  users.map( (val, index) => {
       let id = val.id;

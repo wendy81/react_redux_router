@@ -116,7 +116,6 @@ Container.propTypes = {
 
 // Add this function:
 function mapStateToProps(state, ownProps) {
-  console.log(ownProps)
   return {
     history: ownProps.history,
     alertMessage:state.AlertReducer.message,
