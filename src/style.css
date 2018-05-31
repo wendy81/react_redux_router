@@ -102,6 +102,9 @@ a:link, a:hover, a:active, a:visited {
 	color:#fff;
 	text-decoration: none;
 }
+.modalClassName {
+	color:#000;
+}
 
 .reg_login_form input,
 .reg_login_form button

@@ -15,6 +15,12 @@ export const alertConstants = {
     CLEAR: 'ALERT_CLEAR'
 };
 
+export const modalConstants = {
+    MODAL_SUCCESS: 'MODAL_SUCCESS',
+    MODAL_ERROR: 'MODAL_ERROR',
+    MODAL_CLEAR: 'MODAL_CLEAR'
+};
+
 //USER
 export const userConstants = {
     REGISTER_REQUEST: 'USERS_REGISTER_REQUEST',
@@ -33,7 +39,11 @@ export const userConstants = {
 
     DELETE_REQUEST: 'USERS_DELETE_REQUEST',
     DELETE_SUCCESS: 'USERS_DELETE_SUCCESS',
-    DELETE_FAILURE: 'USERS_DELETE_FAILURE'    
+    DELETE_FAILURE: 'USERS_DELETE_FAILURE', 
+
+    EDIT_REQUEST: 'USERS_EDIT_REQUEST',
+    EDIT_SUCCESS: 'USERS_EDIT_SUCCESS',
+    EDIT_FAILURE: 'USERS_EDIT_FAILURE'        
 };
 
 

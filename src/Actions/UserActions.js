@@ -1,6 +1,7 @@
 import {
     userConstants,
     alertConstants,
+    modalConstants,
     makeActionCreator
 } from './ActionTypes'
 
@@ -39,6 +40,7 @@ function Login(username, password, history) {
         })
         AlertClear(dispatch);      
     }
+
 }
 
 function GetAll(){
@@ -46,7 +48,7 @@ function GetAll(){
         dispatch(makeActionCreator(userConstants.GETALL_REQUEST, 'message')('Request successfull'))
         userService.GetAll()
         .then( user => {
-            dispatch(makeActionCreator(userConstants.GETALL_SUCCESS, 'users')(user));
+            dispatch(makeActionCreator(userConstants.GETALL_SUCCESS, 'users', 'user')(user.users, user.user));
             dispatch(makeActionCreator(alertConstants.SUCCESS,'message')('Get all datas successful'));
         })
         .catch( error => {
@@ -62,19 +64,41 @@ function DelList(id, userId) {
         dispatch(makeActionCreator(userConstants.DELETE_REQUEST, 'message')('Request successfull'))
         userService.DelList(id, userId)
         .then( user => {
-            console.log('99999')
-            console.log(user)
             dispatch(makeActionCreator(userConstants.DELETE_SUCCESS, 'users')(user));
-            dispatch(makeActionCreator(alertConstants.SUCCESS,'message')('Del data successful'));
+            dispatch(makeActionCreator(alertConstants.SUCCESS,'message')('Delete data successful'));
+        })
+        .catch( error => {
+            dispatch(makeActionCreator(userConstants.DELETE_FAILURE,'error')(error));
+            dispatch(makeActionCreator(alertConstants.ERROR,'error')(error));
+
+        })
+        AlertClear(dispatch);
+    }   
+}
+
+function IsDelList(id, userId, textContent) {
+     return function(dispatch) {
+        dispatch(makeActionCreator(modalConstants.MODAL_SUCCESS, 'ids', 'modalTitle', 'modalMessage')({id,userId},'Delete User Info', 'Are You Sure Deltete User:' + textContent));
+    }   
+}
+
+function EditList(id, userId, textContent) {
+     return function(dispatch) {
+        dispatch(makeActionCreator(userConstants.EDIT_REQUEST, 'message')('Request successfull'))
+        userService.EditList(id, userId, textContent)
+        .then( user => {
+            dispatch(makeActionCreator(userConstants.EDIT_SUCCESS, 'usersAddUser')(user));
+            dispatch(makeActionCreator(alertConstants.SUCCESS,'message')('Edit data successful'));
         })
         .catch( error => {
             console.log(error)
-            dispatch(makeActionCreator(userConstants.DELETE_FAILURE,'error')(error));
+            dispatch(makeActionCreator(userConstants.EDIT_FAILURE,'error')(error));
             dispatch(makeActionCreator(alertConstants.ERROR,'error')(error));
         })
         AlertClear(dispatch);
     }   
 }
+
 
 function Logout(history) {
      return function(dispatch) {
@@ -92,4 +116,4 @@ function AlertClear(dispatch) {
     }, 2000)   
 }
 
-export const UserActions = { Register, Login, GetAll, Logout, DelList };
+export const UserActions = { Register, Login, GetAll, Logout, DelList, EditList, IsDelList };

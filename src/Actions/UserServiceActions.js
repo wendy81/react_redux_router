@@ -13,14 +13,6 @@ function Register(user) {
     return fetch('/users/register', requestOptions).then(handleResponse);
 }
 
-function handleResponse(response) {
-	if(!response.ok) {
-		return Promise.reject(response.statusText)
-	}
-	return response.json()
-}
-
-
 function Login(username, password) {
     const requestOptions = {
     	method:'POST',
@@ -29,7 +21,6 @@ function Login(username, password) {
     }
     return fetch('/users/authenticate', requestOptions).then(handleResponse).then ( user => {
     	if( user.username && user.token ) {
-            console.log('32:' + Date.now())
     		localStorage.setItem('user', JSON.stringify(user));
     	}
     	return user
@@ -59,6 +50,25 @@ function DelList(id, userId) {
     return fetch('/delList', requestOptions).then(handleResponse); 
 }
 
+function EditList(id, userId, textContent) {
+    let authHeaderSet = authHeader();
+    const requestOptions = {
+        method:'POST',
+        headers: { 'Content-Type': 'application/json', ...authHeaderSet },
+        body: JSON.stringify({id, userId, textContent})
+    }
+    return fetch('/editList', requestOptions).then(function(response){
+        console.log(response)
+    }); 
+}
+
+function handleResponse(response) {
+    if(!response.ok) {
+        return Promise.reject(response.statusText)
+    }
+    return response.json()
+}
 
 
-export const userService = { Register, Login, GetAll, Logout, DelList };
+
+export const userService = { Register, Login, GetAll, Logout, DelList, EditList };

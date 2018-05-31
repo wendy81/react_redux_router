@@ -20,6 +20,7 @@ import AlertReducer from './Reducers/AlertReducer';
 import RegisterReducer from './Reducers/RegisterReducer';
 import { LoginReducer, LogoutReducer }  from './Reducers/LoginReducer';
 import HomeReducer from './Reducers/HomeReducer'
+import ModalReducer from './Reducers/ModalReducer'
 
 
 const rootReducer = combineReducers({
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
     LoginReducer,
     LogoutReducer,
     HomeReducer,
+    ModalReducer,
     ...createForms({
 	    register: {username:'', password:'', confirmPassword:''},
 	    login: {username:'', password:''},
