@@ -27,14 +27,8 @@ class HomeComponent extends React.Component {
   handlerEditable(refs, editRefs, saveRefs){
     this[refs].current.setAttribute("contentEditable", true);
     this[refs].current.focus();
-    // let t = this[refs].current;
-    //  // console.log(Object.prototype.toString.call(t))
-    //  for(let i in t) {
-    //   console.log(i)
-    //  }
-    // console.log(editRefs)
-     this[editRefs].current.style = 'display:none'
-     this[saveRefs].current.style = 'display:block'
+    this[editRefs].current.style = 'display:none'
+    this[saveRefs].current.style = 'display:block'
   } 
 
   handlerEdit(refs,editRefs, saveRefs, id, userId){
