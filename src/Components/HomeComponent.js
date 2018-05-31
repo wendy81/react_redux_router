@@ -89,7 +89,7 @@ class HomeComponent extends React.Component {
         />
 
         <Col style={{ overflow:'hidden',padding:0}} >
-          <img style={{width:'140%', height:'auto'}} src="/images/detail_block1@3x.png"  alt="img"/>
+          <img style={{width:'140%', height:'auto'}} src="https://uploads.codesandbox.io/uploads/user/cb43ebff-9aa5-4c6f-b63f-881bbdd80331/OVwp-detail_block1@3x.png"  alt="img"/>
           <Row style={{padding:'10px', position: 'absolute', right:0, top:0}}>
             <Col xs="6" className="text-left">username:{username}</Col>
             <Col xs="6" className="text-right" onClick={this.handlerExit.bind(this)}>Exit</Col>
