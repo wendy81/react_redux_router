@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 
 import { UserActions }  from '../Actions/UserActions';
 import AlertComponent from './AlertComponent';
+import PageBgImage from './PageBgImage';
+import ReuseControl from './ReuseControl'
 
 
 
@@ -24,6 +26,7 @@ class LoginComponent extends React.Component {
     const longUsernameEnough = (val) => val.length <=8;
     const password = (val) =>  val==='' ? true : val.length >= 6 && val.length <=16;
     const required = (val) => val && val.length;
+
     return (
       <div>
         <Container>
@@ -33,7 +36,7 @@ class LoginComponent extends React.Component {
           <AlertComponent  alertMessage={alertMessage} alertType={alertType} />
 
           <Col style={{ overflow:'hidden',padding:0}} >
-            <img style={{width:'140%', height:'auto'}} src="https://uploads.codesandbox.io/uploads/user/cb43ebff-9aa5-4c6f-b63f-881bbdd80331/OVwp-detail_block1@3x.png"  alt="img"/>
+            <PageBgImage />
           </Col>
 
           <Col className='app_register_login_logo'>
@@ -45,47 +48,14 @@ class LoginComponent extends React.Component {
              <Form 
               model="login" 
               onSubmit={(values) => this.handleSubmit(values)}
+              validators = {{
+                username: { required, longEnough:longUsernameEnough },
+                password: { required, length:password }
+              }}
               className='vertical_block_spacing reg_login_form'
               >
-                <Label htmlFor=".username">USERNAME</Label>
-                <Control.text 
-                  model=".username"  
-                  id="username"
-                  validators={{
-                    required : required,
-                    length: longUsernameEnough
-                  }}
-                  placeholder="Input your username"
-                />
-                <Errors
-                  className="errors"
-                  model=".username"
-                  show="touched"
-                  messages={{
-                    required: 'Required',
-                    longEnough:'8 character or less'
-                  }}
-                />
-                <Label htmlFor=".password">PASSWORD</Label>
-                <Control.text 
-                type='password'
-                model=".password"  
-                id="password"
-                validators={{
-                  required : required,
-                  length: password
-                }}
-                placeholder="Input your username"
-                /> 
-                <Errors
-                  className="errors"
-                  model=".password"
-                  show="touched"
-                  messages={{
-                    required: 'Required',
-                    length:'6-16 characters'
-                  }}
-                /> 
+              <ReuseControl />
+               
                 <Button type='submit' size="lg" block className='reg_login_btn'>Login</Button>  
                 </Form>               
 

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { UserActions }  from '../Actions/UserActions';
 import AlertComponent from './AlertComponent';
 import ModalComponent from './ModalComponent';
+import PageBgImage from './PageBgImage';
 
 class HomeComponent extends React.Component {
 
@@ -83,12 +84,11 @@ class HomeComponent extends React.Component {
         />
 
         <Col style={{ overflow:'hidden',padding:0}} >
-          <img style={{width:'140%', height:'auto'}} src="https://uploads.codesandbox.io/uploads/user/cb43ebff-9aa5-4c6f-b63f-881bbdd80331/OVwp-detail_block1@3x.png"  alt="img"/>
+          <PageBgImage />
           <Row style={{padding:'10px', position: 'absolute', right:0, top:0}}>
-            <Col xs="6" className="text-left">username:{username}</Col>
-            <Col xs="6" className="text-right" onClick={this.handlerExit.bind(this)}>Exit</Col>
+          <Col xs="6" className="text-left"><h6>username:{username}</h6></Col>
+          <Col xs="6" className="text-right" onClick={this.handlerExit.bind(this)}><h6>Exit</h6></Col>
           </Row>   
-            
         </Col>
 
         

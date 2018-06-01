@@ -106,6 +106,10 @@ a:link, a:hover, a:active, a:visited {
 	color:#000;
 }
 
+.focused {
+	color:#f60;
+}
+
 .reg_login_form input,
 .reg_login_form button
  {

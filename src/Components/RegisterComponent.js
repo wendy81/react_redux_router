@@ -7,6 +7,8 @@ import { UserActions }  from '../Actions/UserActions';
 import { Control, Errors, Form } from 'react-redux-form';
 
 import AlertComponent from './AlertComponent';
+import PageBgImage from './PageBgImage';
+import ReuseControl from './ReuseControl'
 
 
 class RegisterComponent extends React.Component {
@@ -18,8 +20,21 @@ class RegisterComponent extends React.Component {
     dispatch(UserActions.Register(user,history))
   }
 
+  attach(node) {
+    // console.log(node[0])
+    // console.log(node[1])
+    // console.log(node[2])
+    // console.log(node[3])
+
+    // console.log(Object.prototype.toString.call(node[0]))
+    // console.log(node[0].validity)
+    // // for( let i in node[0]) {
+    // //   console.log(i)
+    // // }
+  }
+
   render() {
-    const {alertMessage, alertType} = this.props;
+    const {alertMessage, alertType, reg} = this.props;
     const longUsernameEnough = (val) => val.length <=8;
     const password = (val) =>  val==='' ? true : val.length >= 6 && val.length <=16;
     const required = (val) => val && val.length;
@@ -27,7 +42,13 @@ class RegisterComponent extends React.Component {
         password,
         confirmPassword
     }) => {
-        return password === confirmPassword;
+      let passwordValid = reg.password.valid;
+      let confirmPasswordValid = reg.confirmPassword.valid;
+      let result = true;
+      if ( passwordValid && confirmPasswordValid ) {
+        result = (password === confirmPassword) ? true : false
+      } 
+      return result;
     }
 
     return (
@@ -41,7 +62,7 @@ class RegisterComponent extends React.Component {
 
 
           <Col style={{ overflow:'hidden',padding:0}} >
-            <img style={{width:'140%', height:'auto'}} src="https://uploads.codesandbox.io/uploads/user/cb43ebff-9aa5-4c6f-b63f-881bbdd80331/OVwp-detail_block1@3x.png" alt="img"/>
+            <PageBgImage />
           </Col>
 
           <Col className='app_register_login_logo'>
@@ -54,66 +75,35 @@ class RegisterComponent extends React.Component {
               model="register" 
               // initialState={{ username: '', password:'', confirmPassword:'' }}
               validators = {{
-                '': { passwordsMatch }
+                '': { passwordsMatch },
+                username: { required, longEnough:longUsernameEnough },
+                password: { required, length:password },
+                confirmPassword: { required, length:password }              
               }}
+
+              getRef={(node) => this.attach(node)}
               onSubmit={(values) => this.handleSubmit(values)}
               // onSubmitFailed={ (userForm) => this.handleSubmitFailed(userForm) }
               className='vertical_block_spacing reg_login_form'
+              hideNativeErrors
               >
-                <Label htmlFor=".username">USERNAME</Label>
-                <Control.text 
-                  model=".username"  
-                  id="username"
-                  validators={{
-                    required : required,
-                    length: longUsernameEnough
-                  }}
-                  placeholder="Input your username"
-                />
-                <Errors
-                  className="errors"
-                  model=".username"
-                  show="touched"
-                  messages={{
-                    required: 'Required',
-                    longEnough:'8 character or less'
-                  }}
-                />
-                <Label htmlFor=".password">PASSWORD</Label>
-                <Control.text 
-                type='password'
-                model=".password"  
-                id="password"
-                validators={{
-                  required : required,
-                  length: password
-                }}
-                placeholder="Input your username"
-                /> 
-                <Errors
-                  className="errors"
-                  model=".password"
-                  show="touched"
-                  messages={{
-                    required: 'Required',
-                    length:'6-16 characters'
-                  }}
-                />                
+                <ReuseControl />              
                 <Label htmlFor=".confirmPassword">CONFIRM PASSWORD</Label>
-                <Control.text 
+                <Control 
                 type='password'
                 model=".confirmPassword"  
                 id="confirmPassword"
-                validators={{
-                  required : required,
-                  length: password,
-                }}
-                placeholder="Input your username"
+                placeholder="Input your password again"
+                mapProps={{
+                  className: ({fieldValue}) => !fieldValue.valid
+                  ? 'focused'
+                  : ''
+                }}                
                 />
                 <Errors
                   className="errors"
                   model=".confirmPassword"
-                  show="touched"
+                  show={(field) => field.focus || field.submitFailed}
                   messages={{
                     required: 'Required',
                     length:'6-16 characters',
@@ -152,7 +142,8 @@ function mapStateToProps(state, ownProps) {
   return {
     history:ownProps.history,
     alertMessage:state.AlertReducer.message,
-    alertType:state.AlertReducer.type
+    alertType:state.AlertReducer.type,
+    reg: state.forms.register
   };
 }
 
